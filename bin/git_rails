@@ -140,7 +140,9 @@ if [ ! -z "$migrations" ]; then
 
     # BUILD THE MIGRATION COMMAND FROM THE VERSION AND TYPE
     version=`echo "$migration" | cut -d'_' -f1 | cut -d'/' -f3`
-    migrate_command="ActiveRecord::Migrator.run(:$migration_type, 'db/migrate', $version) rescue nil"
+    migrate_command="ActiveRecord::MigrationContext.new('db/migrate').run(:$migration_type, $version) rescue nil"
+
+    echo "> $migration_type $migration"
 
     # APPEND OR PREPREND TO THE COMMAND LIST DEPENDING ON MIGRATION TYPE
     if [[ $migration_type == "down" ]]; then
@@ -155,7 +157,7 @@ if [ ! -z "$migrations" ]; then
 
   # RUN THE MIGRATIONS (AND TEST PREPARE)
   {
-    echo "$migrate_commands" | bundle exec rails runner /dev/stdin
+    echo "$migrate_commands;" | bundle exec rails runner /dev/stdin
   } > $out_target
 
   # CLEAN UP DOWN MIGRATIONS

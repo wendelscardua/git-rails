@@ -92,7 +92,7 @@ if [ "$verbose" -eq 1 ]; then
   if [ ! -z "$bundle_changed" -o ! -z "$yarn_changed" ]; then
     echo -e "\nPrep needed:"
     if [ ! -z "$bundle_changed" ]; then
-      echo -e "\t- bundle"
+      echo -e "\t- bundle install"
     fi
     if [ ! -z "$yarn_changed" ]; then
       echo -e "\t- yarn"
@@ -116,8 +116,8 @@ fi
 
 # okay, now actually run whatever's needed
 if [ ! -z "$bundle_changed" ]; then
-  echo "Your Gemfile.lock has changed, running bundle"
-  bundle
+  echo "Your Gemfile.lock has changed, running bundle install"
+  bundle install
 fi
 
 if [ ! -z "$yarn_changed" ]; then
